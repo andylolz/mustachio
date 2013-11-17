@@ -107,11 +107,9 @@ Magickly.add_convert_factory :mustachify do |c|
 
       puts mustache
 
-      scale = desired_width / mustache['width']
-      
       srt_params = [
                     [ mustache['width'] / 2, mustache['height'] ].map{|e| e.to_i }.join(','), # bottom-center of stache
-                    scale * mustache['scale_factor'], # scale
+                    desired_width / mustache['width'] * mustache['scale_factor'], # scale
                     rotation, # rotate
                     [ face['forehead_center']['x'], face['forehead_center']['y'] ].map{|e| e.to_i }.join(',') # middle of mouth
                    ]
@@ -125,7 +123,7 @@ Magickly.add_convert_factory :mustachify do |c|
 
       srt_params = [
                     [ 70, 0 ].map{|e| e.to_i }.join(','), # bottom-center of stache
-                    scale * 2, # scale
+                    desired_width / 180, # scale
                     0, # rotate
                     [ face['mouth_center']['x'], face['mouth_center']['y'] ].map{|e| e.to_i }.join(',') # middle of mouth
                    ]
