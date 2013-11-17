@@ -28,6 +28,7 @@ GEM
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.3)
     diff-lcs (1.2.4)
+    dimensions (1.2.0)
     dragonfly (0.9.15)
       multi_json (~> 1.0)
       rack
@@ -51,7 +52,6 @@ GEM
       multi_xml (>= 0.5.2)
     httpauth (0.2.0)
     i18n (0.6.5)
-    imagesize (0.1.1)
     jeweler (1.8.7)
       builder
       bundler (~> 1.0)
@@ -110,11 +110,11 @@ DEPENDENCIES
   activesupport (< 4.0)
   addressable (~> 2.2)
   debugger
+  dimensions (~> 1.2.0)
   dragonfly (~> 0.9.14)
   excon (~> 0.25.3)
   faraday (~> 0.8.8)
   haml (>= 3.0, < 5)
-  imagesize (~> 0.1)
   jeweler (~> 1.6)
   magickly!
   newrelic_rpm

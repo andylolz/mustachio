@@ -1,5 +1,5 @@
 require 'magickly'
-require 'image_size'
+require 'dimensions'
 require File.join(File.dirname(__FILE__), 'mustachio', 'factories')
 require File.join(File.dirname(__FILE__), 'mustachio', 'shortcuts')
 
@@ -18,12 +18,11 @@ module Mustachio
     def setup
       staches = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', 'config', 'staches.yml')))
       staches.map! do |stache|
-        stache['vert_offset'] ||= 0
-        stache['mouth_overlap'] ||= 0
+        stache['scale_factor'] ||= 0
         
-        stache['file_path'] = File.expand_path(File.join(File.dirname(__FILE__), 'mustachio', 'public', 'images', 'staches', stache['filename']))
+        stache['file_path'] = File.join(File.dirname(__FILE__), 'mustachio', 'public', 'images', 'staches', stache['filename'])
         unless stache['width'] && stache['height']
-          stache['width'], stache['height'] = ImageSize.new(File.new(stache['file_path'])).get_size
+          stache['width'], stache['height'] = Dimensions.dimensions(File.new(stache['file_path']))
         end
         stache
       end

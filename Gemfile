@@ -15,7 +15,7 @@ gem 'faraday', '~> 0.8.8'
 gem 'addressable', '~> 2.2', :require => 'addressable/uri'
 gem 'haml', '>= 3.0', '< 5'
 
-gem 'imagesize', '~> 0.1', :require => 'image_size'
+gem "dimensions", "~> 1.2.0"
 
 group :development do
   gem 'jeweler', '~> 1.6'
