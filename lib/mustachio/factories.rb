@@ -125,7 +125,7 @@ Magickly.add_convert_factory :mustachify do |c|
 
       srt_params = [
                     [ 70, 0 ].map{|e| e.to_i }.join(','), # bottom-center of stache
-                    scale * 1.5, # scale
+                    scale * 2, # scale
                     0, # rotate
                     [ face['mouth_center']['x'], face['mouth_center']['y'] ].map{|e| e.to_i }.join(',') # middle of mouth
                    ]
