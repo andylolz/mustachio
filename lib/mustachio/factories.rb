@@ -87,26 +87,51 @@ Magickly.add_convert_factory :mustachify do |c|
         'x' => ((face['eye_left']['x'] + face['eye_right']['x']) / 2.0),
         'y' => ((face['eye_left']['y'] + face['eye_right']['y']) / 2.0)
       }
+
+      face['mouth_center'] ||= {
+        'x' => ((face['mouth_left']['x'] + face['mouth_right']['x']) / 2.0),
+        'y' => ((face['mouth_left']['y'] + face['mouth_right']['y']) / 2.0)
+      }
+
+      face['forehead_center'] = {}
+      face['forehead_center']['y'] ||= (face['face_tl']['y'] + face['eye_center']['y']) / 2.0
+      face['forehead_center']['x'] ||= face['mouth_center']['x'] + (face['forehead_center']['y'] - face['mouth_center']['y']) * (face['eye_center']['x'] - face['mouth_center']['x']) / (face['eye_center']['y'] - face['mouth_center']['y'])
       
       # perform transform such that the mustache is the height
       # of the upper lip, and the bottom-center of the stache
       # is mapped to the center of the mouth
 
-      rotation = Math.atan(( face['eye_right']['y'] - face['eye_left']['y'] ).to_f / ( face['eye_right']['x'] - face['eye_left']['x'] ).to_f ) / Math::PI * 180.0 + 15.0
+      rotation = Math.atan(( face['forehead_center']['y'] - face['mouth_center']['y'] ).to_f / ( face['forehead_center']['x'] - face['mouth_center']['x'] ).to_f ) + mustache['rotation_bias']
 
-      desired_width = face['face_size']['x'] * mustache['scale_factor']
+      desired_width = face['face_size']['x']
+
+      puts mustache
 
       scale = desired_width / mustache['width']
       
       srt_params = [
-                    [ mustache['width'] / 2.0, mustache['height'] ].map{|e| e.to_i }.join(','), # bottom-center of stache
-                    scale, # scale
+                    [ mustache['width'] / 2, mustache['height'] ].map{|e| e.to_i }.join(','), # bottom-center of stache
+                    scale * mustache['scale_factor'], # scale
                     rotation, # rotate
-                    [ face['eye_center']['x'], (face['face_tl']['y'] + face['eye_center']['y']) / 2.0 ].map{|e| e.to_i }.join(',') # middle of mouth
+                    [ face['forehead_center']['x'], face['forehead_center']['y'] ].map{|e| e.to_i }.join(',') # middle of mouth
                    ]
       srt_params_str = srt_params.join(' ')
 
       commands << "\\( #{mustache['file_path']} +distort SRT '#{srt_params_str}' \\)"
+
+      streamer_file_path = File.join(File.dirname(__FILE__), 'public', 'images', 'staches', 'streamer.png')
+
+      puts mustache['width']
+
+      srt_params = [
+                    [ 70, 0 ].map{|e| e.to_i }.join(','), # bottom-center of stache
+                    scale * 1.5, # scale
+                    0, # rotate
+                    [ face['mouth_center']['x'], face['mouth_center']['y'] ].map{|e| e.to_i }.join(',') # middle of mouth
+                   ]
+      srt_params_str = srt_params.join(' ')
+
+      commands << "\\( #{streamer_file_path} +distort SRT '#{srt_params_str}' \\)"
     end
     commands << "-flatten"
     

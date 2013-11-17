@@ -4,6 +4,11 @@
 -
   filename: party-hat.png
   scale_factor: 1.2
+  rotation_bias: -5.0
+-
+  filename: party-hat-2.png
+  scale_factor: 1.2
 -
   filename: traffic-cone.png
-  scale_factor: 1.7
+  scale_factor: 2
+  rotation_bias: 15.0

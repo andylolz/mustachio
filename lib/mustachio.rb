@@ -18,7 +18,8 @@ module Mustachio
     def setup
       staches = YAML.load(File.read(File.join(File.dirname(__FILE__), '..', 'config', 'staches.yml')))
       staches.map! do |stache|
-        stache['scale_factor'] ||= 0
+        stache['scale_factor'] ||= 1.0
+        stache['rotation_bias'] ||= 0.0
         
         stache['file_path'] = File.join(File.dirname(__FILE__), 'mustachio', 'public', 'images', 'staches', stache['filename'])
         unless stache['width'] && stache['height']

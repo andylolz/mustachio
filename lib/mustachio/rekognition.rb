@@ -46,7 +46,7 @@ module Mustachio
         width, height = self.dims file
 
         json['face_detection'].map do |entry|
-          eye_left, eye_right, nose = entry.values_at('eye_left', 'eye_right', 'nose').map do |dims|
+          eye_left, eye_right, mouth_left, mouth_right, nose = entry.values_at('eye_left', 'eye_right', 'mouth_l', 'mouth_r', 'nose').map do |dims|
             {
               'x' => ((dims['x'].to_f / width) * 100.0),
               'y' => ((dims['y'].to_f / height) * 100.0)
@@ -65,9 +65,7 @@ module Mustachio
               'y' => ((entry['boundingbox']['size']['height'].to_f / height) * 100.0)
             }
 
-          puts face_size
-
-          { 'eye_left' => eye_left, 'eye_right' => eye_right, 'nose' => nose, 'face_tl' => face_tl, 'face_size' => face_size }
+          { 'eye_left' => eye_left, 'eye_right' => eye_right, 'mouth_left' => mouth_left, 'mouth_right' => mouth_right, 'nose' => nose, 'face_tl' => face_tl, 'face_size' => face_size }
         end
       end
     end
