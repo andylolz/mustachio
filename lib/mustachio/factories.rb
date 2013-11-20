@@ -7,11 +7,11 @@
 #     # raise ArgumentError
 #     thumb_width = thumb_width.to_f
 #     thumb_height = thumb_height.to_f
-    
+
 #     span = Mustachio.face_span(convert.image)
 #     scale_x = thumb_width / span[:width]
 #     scale_y = thumb_height / span[:height]
-    
+
 #     # TODO
 #     # if thumb larger than span
 #     # center span and crop
@@ -19,7 +19,7 @@
 #     # resize image so span is smaller than thumb, then crop
 
 #     scale = offset_x = offset_y = nil
-    
+
 #     # center the span in the dimension with the smaller scale
 #     if scale_x < scale_y
 #       # check if image is tall enough for this scaling
@@ -31,7 +31,7 @@
 #         scale = thumb_height / height.to_f
 #         offset_x = span[:left] * scale + ((scale - scale_x) * width / 2.0)
 #       end
-      
+
 #       offset_y = (span[:center_y] * scale) - (thumb_height / 2)
 #     else
 #       # check if image is wide enough for this scaling
@@ -43,10 +43,10 @@
 #         scale = thumb_width / width.to_f
 #         offset_y = span[:top] * scale + ((scale - scale_y) * height / 2.0)
 #       end
-      
+
 #       offset_x = (span[:center_x] * scale) - (thumb_width / 2)
 #     end
-    
+
 #     # round up, to ensure the scaled image fills the thumb area
 #     percentage = (scale * 100).ceil
 
@@ -67,20 +67,11 @@ Magickly.add_convert_factory :mustachify do |c|
     # resize to smaller than 900px, because Face.com downsizes the image to this anyway
     # TODO move resize inside of Mustachio.face_data
     faces = convert.image.thumb('900x900>').face_data_as_px(width, height)
-    
+
     commands = ['-virtual-pixel transparent']
     faces.each do |face|
-      stache_num = case stache_num_param
-                   when true
-                     0
-                   when 'true'
-                     0
-                   when 'rand'
-                     rand(Mustachio.mustaches.size)
-                   else
-                     stache_num_param.to_i
-                   end
-      
+      stache_num = rand(Mustachio.mustaches.size)
+
       mustache = Mustachio.mustaches[stache_num]
 
       face['eye_center'] ||= {
@@ -96,7 +87,7 @@ Magickly.add_convert_factory :mustachify do |c|
       face['forehead_center'] = {}
       face['forehead_center']['y'] ||= (face['face_tl']['y'] + face['eye_center']['y']) / 2.0
       face['forehead_center']['x'] ||= face['mouth_center']['x'] + (face['forehead_center']['y'] - face['mouth_center']['y']) * (face['eye_center']['x'] - face['mouth_center']['x']) / (face['eye_center']['y'] - face['mouth_center']['y'])
-      
+
       # perform transform such that the mustache is the height
       # of the upper lip, and the bottom-center of the stache
       # is mapped to the center of the mouth
@@ -132,7 +123,7 @@ Magickly.add_convert_factory :mustachify do |c|
       commands << "\\( #{streamer_file_path} +distort SRT '#{srt_params_str}' \\)"
     end
     commands << "-flatten"
-    
+
     commands.join(' ')
   end
 end
